@@ -1,0 +1,174 @@
+product-id: 960
+media-path: audio/chars/%s
+gme-lang: GERMAN
+init: $enemy := 0 $playerHP := 100 $enemyHP := 0 $enemyDamage := 0 $deinZug := 0
+scripts:
+  initialisierung:
+  - P(Willkommen) $enemy := 0 $enemyHP := 0 $playerHP := 100 $enemyDamage := 0 $deinZug := 0
+
+
+  
+  shiggyErsteAudio:
+  - P(ShiggyErste)
+  shiggyZweiteAudio:
+  - P(ShiggyZweite)
+  shiggyKampf:
+  - P(ShiggyKampf) $enemy := 1 $enemyHP := 50 J(combat)
+
+  dragoranErsteAudio:
+  - P(DragoranErste)
+  dragoranZweiteAudio:
+  - P(DragoranZweite)
+  dragoranKampf:
+  - P(DragoranKampf) $enemy := 2 $enemyHP := 80 J(combat)
+
+  mewTwoErsteAudio:
+  - P(MewTwoErste)
+  mewTwoKampf:
+  - P(MewTwoKampf) $enemy := 3 $enemyHP := 100 J(combat)
+
+  pikachuErsteAudio:
+  - P(PikachuErste)
+  pikachuZweiteAudio:
+  - P(PikachuZweite)
+
+
+
+  combat:
+  - J(random)
+
+  combat_second:
+  - $enemyDamage == 10? P(DerGegnerMacht) P(ten) P(Schaden) $playerHP -= 10 J(combat_third)
+  - $enemyDamage == 20? P(DerGegnerMacht) P(twenty) P(Schaden) $playerHP -= 20 J(combat_third)
+  - $enemyDamage == 30? P(DerGegnerMacht) P(thirty) P(Schaden) $playerHP -= 30 J(combat_third)
+  - $enemyDamage == 40? P(DerGegnerMacht) P(fourty) P(Schaden) $playerHP -= 40 J(combat_third)
+
+  combat_third:
+  - $playerHP == 10? P(DuHastNoch) P(ten) P(Leben) J(combat_fourth)
+  - $playerHP == 20? P(DuHastNoch) P(twenty) P(Leben) J(combat_fourth)
+  - $playerHP == 30? P(DuHastNoch) P(thirty) P(Leben) J(combat_fourth)
+  - $playerHP == 40? P(DuHastNoch) P(fourty) P(Leben) J(combat_fourth)
+  - $playerHP == 50? P(DuHastNoch) P(fifty) P(Leben) J(combat_fourth)
+  - $playerHP == 60? P(DuHastNoch) P(sixty) P(Leben) J(combat_fourth)
+  - $playerHP == 70? P(DuHastNoch) P(seventy) P(Leben) J(combat_fourth)
+  - $playerHP == 80? P(DuHastNoch) P(eighty) P(Leben) J(combat_fourth)
+  - $playerHP == 90? P(DuHastNoch) P(ninety) P(Leben) J(combat_fourth)
+  - $playerHP == 100? P(DuHastNoch) P(hundred) P(Leben) J(combat_fourth)
+  - P(GameOver) J(initialisierung)
+
+
+  combat_fourth:
+  - $deinZug := 1 P(JetztKommtDeinZug)
+
+
+
+  angriffEins:
+  - $deinZug == 0? P(DuBistNichtAmZug)
+  - $deinZug == 1? P(DuFührstDen) P(Ersten) P(AngriffAus) $enemyHP -= 10 $deinZug := 0 J(combat_fifth)
+
+  angriffZwei:
+  - $deinZug == 0? P(DuBistNichtAmZug)
+  - $deinZug == 1? P(DuFührstDen) P(Zweiten) P(AngriffAus) $enemyHP -= 20 $deinZug := 0 J(combat_fifth)
+
+  angriffDrei:
+  - $deinZug == 0? P(DuBistNichtAmZug)
+  - $deinZug == 1? P(DuFührstDen) P(Dritten) P(AngriffAus) $enemyHP -= 30 $deinZug := 0 J(combat_fifth)
+
+  angriffVier:
+  - $deinZug == 0? P(DuBistNichtAmZug)
+  - $deinZug == 1? P(DuFührstDen) P(Vierten) P(AngriffAus) $enemyHP -= 10 $deinZug := 0 J(combat_fifth)
+
+
+
+  combat_fifth:
+  - $enemyHP == 10? P(DerGegnerHatNoch) P(ten) P(Leben) J(combat)
+  - $enemyHP == 20? P(DerGegnerHatNoch) P(twenty) P(Leben) J(combat)
+  - $enemyHP == 30? P(DerGegnerHatNoch) P(thirty) P(Leben) J(combat)
+  - $enemyHP == 40? P(DerGegnerHatNoch) P(fourty) P(Leben) J(combat)
+  - $enemyHP == 50? P(DerGegnerHatNoch) P(fifty) P(Leben) J(combat)
+  - $enemyHP == 60? P(DerGegnerHatNoch) P(sixty) P(Leben) J(combat)
+  - $enemyHP == 70? P(DerGegnerHatNoch) P(seventy) P(Leben) J(combat)
+  - $enemyHP == 80? P(DerGegnerHatNoch) P(eighty) P(Leben) J(combat)
+  - $enemyHP == 90? P(DerGegnerHatNoch) P(ninety) P(Leben) J(combat)
+  - $enemyHP == 100? P(DerGegnerHatNoch) P(hundred) P(Leben) J(combat)
+  - P(DuHastGewonnen) J(initialisierung)
+
+
+
+  abbruch:
+  - P(Abbruch) $enemy := 0 $enemyHP := 0 $playerHP := 100 $enemyDamage := 0 $deinZug := 0
+
+
+
+  random:
+  - T($r,65535) $rnd+=$r $rnd*=25173 $rnd+=13849 $enemyDamage:=$rnd $enemyDamage%=4 $enemyDamage+=1 $enemyDamage*=10 J(combat_second)
+
+
+language: de
+speak:
+  five: "fünf"
+  ten: "zehn"
+  fifteen: "fünfzehn"
+  twenty: "zwanzig"
+  twentyfive: "fünfzig"
+  thirty: "dreißig"
+  thirtyfive: "fünfzig"
+  fourty: "vierzig"
+  fourtyfive: "fünfundvierzig"
+  fifty: "fünfzig"
+  fiftyfive: "fünfundfünfzig"
+  sixty: "sechzig"
+  sixtyfive: "fünfundsechzig"
+  seventy: "siebzig"
+  seventyfive: "fünfundsiebzig"
+  eighty: "achtzig"
+  eightyfive: "fünfundachtzig"
+  ninety: "neunzig"
+  ninetyfive: "fünfundneunzig"
+  hundred: "einhundert"
+  MewTwoErste: "Mewtwo Erste"
+  DragoranErste: "Dragoran Erste"
+  DragoranZweite: "Dragoran Zweite"
+  ShiggyErste: "Shiggy Erste"
+  ShiggyZweite: "Shiggy Zweite"
+  PikachuErste: "Pikachu Erste"
+  PikachuZweite: "Pikachu Zweite"
+  Willkommen: "Willkommen"
+  Abbruch: "Abbruch"
+  ShiggyKampf: "Du kämpfts jetzt gegen shiggy. Shiggy hat 50 Leben"
+  DragoranKampf: "Du kämpfts jetzt gegen dragoran. Dragoran hat 80 Leben"
+  MewTwoKampf: "Du kämpfts jetzt gegen Mewtwo. Mewtwo hat 100 Leben"
+  DerGegnerMacht: "Der Gegner macht"
+  Schaden: "Schaden"
+  GameOver: "Du hast verloren"
+  DuHastNoch: "Du hast noch"
+  Leben: "Leben"
+  JetztKommtDeinZug: "Jetzt kommt dein Zug"
+  DuBistNichtAmZug: "Du bist nicht am Zug"
+  DuFührstDen: "Du führst den"
+  Ersten: "ersten"
+  Zweiten: "zweiten"
+  Dritten: "dritten"
+  Vierten: "vierten"
+  AngriffAus: "Angriff aus"
+  DuHastGewonnen: "Du hast gewonnen"
+  DerGegnerHatNoch: "Der Gegner hat noch"
+
+
+scriptcodes:
+  initialisierung: 910
+  shiggyErsteAudio: 913
+  shiggyZweiteAudio: 914
+  dragoranErsteAudio: 915
+  dragoranZweiteAudio: 916
+  mewTwoErsteAudio: 912
+  pikachuErsteAudio: 917
+  pikachuZweiteAudio: 918
+  abbruch: 923
+  shiggyKampf: 924
+  dragoranKampf: 926
+  mewTwoKampf: 925
+  angriffEins: 919
+  angriffZwei: 920
+  angriffDrei: 921
+  angriffVier: 922
